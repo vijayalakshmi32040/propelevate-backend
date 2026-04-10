@@ -1,6 +1,8 @@
 package com.propelevate.backend.entity;
 
 import jakarta.persistence.*;
+import java.util.List;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "users")
@@ -20,6 +22,10 @@ public class User {
     private String password;
 
     private String role;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
+    private List<Property> properties;
 
     // Constructors
 
@@ -85,5 +91,13 @@ public class User {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public List<Property> getProperties() {
+        return properties;
+    }
+
+    public void setProperties(List<Property> properties) {
+        this.properties = properties;
     }
 }

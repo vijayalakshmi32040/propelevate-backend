@@ -1,6 +1,7 @@
 package com.propelevate.backend.entity;
 
 import jakarta.persistence.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "estimates")
@@ -10,6 +11,7 @@ public class Estimate {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "property_id")
     private Long propertyId;
 
     private String totalCost;
@@ -22,6 +24,11 @@ public class Estimate {
 
     @Column(length = 2000)
     private String improvementCosts;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "property_id", insertable = false, updatable = false)
+    @JsonIgnore
+    private Property property;
 
     // Constructors
 
@@ -101,5 +108,13 @@ public class Estimate {
 
     public void setImprovementCosts(String improvementCosts) {
         this.improvementCosts = improvementCosts;
+    }
+
+    public Property getProperty() {
+        return property;
+    }
+
+    public void setProperty(Property property) {
+        this.property = property;
     }
 }

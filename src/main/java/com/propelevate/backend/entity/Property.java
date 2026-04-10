@@ -1,11 +1,8 @@
 package com.propelevate.backend.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import java.util.List;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "properties")
@@ -45,6 +42,15 @@ public class Property {
     private String ownerEmail;
 
     private Long ownerId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    @JsonIgnore
+    private User user;
+
+    @OneToMany(mappedBy = "property", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
+    private List<Estimate> estimates;
 
     // Constructors
 
@@ -213,5 +219,21 @@ public class Property {
 
     public void setOwnerId(Long ownerId) {
         this.ownerId = ownerId;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public List<Estimate> getEstimates() {
+        return estimates;
+    }
+
+    public void setEstimates(List<Estimate> estimates) {
+        this.estimates = estimates;
     }
 }
